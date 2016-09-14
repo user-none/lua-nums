@@ -174,49 +174,6 @@ if f:asbytestring() ~= ba_to_bs(f:asbytearray()) then
 	fail = true
 end
 
-
-local ba = { 0x0FF }
-if not verify_ba(a:swape():asbytearray(), ba) then
-	print("\tFail: a:swape()")
-	fail = true
-end
-
-local ba = { 0x87, 0x4B, 0x9F, 0x2C, 0xA8, 0xF2, 0x58, 0xF1, 0xFD, 0x1E, 0x66}
-if not verify_ba(b:swape():asbytearray(), ba) then
-	print("\tFail: b:swape()")
-	fail = true
-end
-
--- When swapped the trailing zero will become a leading zero and leading
--- zeros are trimmed.
-local ba = { 0x01  }
-if not verify_ba(c:swape():asbytearray(), ba) then
-	print("\tFail: c:swape()")
-	fail = true
-end
-
-local ba = { 0xB1, 0x0C, 0xC7, 0x11, 0xE8, 0x85, 0x27, 0xD2, 0x8D, 0x26, 0x79, 0x02 }
-if not verify_ba(d:swape():asbytearray(), ba) then
-	print("\tFail: d:swape()")
-	fail = true
-end
-
-local ba = { 0xFF, 0xFF, 0xAF, 0xD8, 0x6B, 0x90, 0x88, 0xA6, 0x01}
-if not verify_ba(e:swape():asbytearray(), ba) then
-    local gg = e:swape():asbytearray()
-	for i=1,#gg do
-		print(string.format("%x", gg[i]))
-    end
-	print("\tFail: e:swape()")
-	fail = true
-end
-
-local ba = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-if not verify_ba(f:swape():asbytearray(), ba) then
-	print("\tFail: f:swape()")
-	fail = true
-end
-
 if not fail then
 	print("\tPass")
 end
