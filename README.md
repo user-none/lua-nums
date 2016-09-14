@@ -1,7 +1,7 @@
 Lua-nums
 ========
 
-Lua-nums provides pure Lua number modules.
+Lua number library providing BigNum and fixed width unsigned integer types.
 
 BigNum (Infinite Precision)
 ---------------------------
