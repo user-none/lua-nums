@@ -111,9 +111,9 @@ local x = 1
 local y = 0
 local z = 0
 while x > z do
-	z = x
-	x = x << 1
-	y = y + 1
+    z = x
+    x = x << 1
+    y = y + 1
 end
 DIGIT_BITS = ((y - 1)//2) - 1 -- Gives us 30 bits with Lua 5.3.
 local DIGIT_MASK = (1 << DIGIT_BITS) - 1
@@ -184,7 +184,7 @@ end
 local function reduce(a)
     -- Ensure the BN is never empty.
     if #a._digits == 0 then
-    	a._pos = true
+        a._pos = true
         a._digits = { 0 }
         return
     end
@@ -198,7 +198,7 @@ local function reduce(a)
     end
 
     if #a._digits == 1 and a._digits[1] == 0 then
-    	a._pos = true
+        a._pos = true
     end
 end
 
@@ -308,7 +308,7 @@ local function add_int(a, b)
     expand(a, b)
 
     for i=1,#a._digits do
-    	-- Add the digits and the carry.
+        -- Add the digits and the carry.
         c._digits[i] = a._digits[i] + b._digits[i] + u
         -- Calculate carry buy pulling it off the top of the digit.
         u = c._digits[i] >> DIGIT_BITS
@@ -343,12 +343,12 @@ local function sub_int(a, b)
     expand(a, b)
 
     for i=1,#a._digits do
-    	-- Subtract the digits and the carry.
-    	-- If there is a carry we've gone negative. Mask it to get a positive
-    	-- number with the carry bit set. All digits are unsigned values. If
-    	-- this was C and we were using an unsigned 32 bit integer as the digit
-    	-- type then it would handle wrapping internally. However, Lua doesn't
-    	-- have fixed size unsigned types so we need to handle wrapping.
+        -- Subtract the digits and the carry.
+        -- If there is a carry we've gone negative. Mask it to get a positive
+        -- number with the carry bit set. All digits are unsigned values. If
+        -- this was C and we were using an unsigned 32 bit integer as the digit
+        -- type then it would handle wrapping internally. However, Lua doesn't
+        -- have fixed size unsigned types so we need to handle wrapping.
         c._digits[i] = (a._digits[i] - b._digits[i] - u) & DIGIT_CMASK
         -- Calculate carry buy pulling it off the top of the digit.
         u = c._digits[i] >> DIGIT_BITS
@@ -443,8 +443,8 @@ local function div_remain(a, b)
     r = M:new()
     q = M:new()
     while e >= 0 do
-    	-- r is the remainder and it's also used for the drop down add.
-    	-- Shift it left one digit so it's the next field larger for the top.
+        -- r is the remainder and it's also used for the drop down add.
+        -- Shift it left one digit so it's the next field larger for the top.
         r = r << 1
         -- Check if there is a bit set at this position in the dividend.
         -- If so we set the first bit in r as the drop down and add part.
@@ -522,8 +522,8 @@ local function tostring_int(a, base)
         -- one digit less value and keep dividing until we've gone though all
         -- digits.
         for i=#a._digits,1,-1 do
-        	-- Push the digit and the remainder from the last
-        	-- together.
+            -- Push the digit and the remainder from the last
+            -- together.
             w = (w << DIGIT_BITS) | a._digits[i]
             if w >= base then
                 -- If the remainder is now larger than or equal to base we need
@@ -744,7 +744,7 @@ M_mt.__pow =
         -- A negative exponent will always be smaller than 0 and since we're
         -- doing integer only with truncation the result will always be 0.
         if b < M.ZERO then
-        	return M:new()
+            return M:new()
         end
 
         c = M:new(1)
@@ -836,12 +836,12 @@ M_mt.__shl =
 
         a, b = get_inputs(a, b)
         if not b._pos then
-        	return nil, "Cannot shift by negative"
+            return nil, "Cannot shift by negative"
         end
         t = b
         b = b:asnumber()
         if M:new(b) ~= t then
-        	return nil, "Overflow"
+            return nil, "Overflow"
         end
 
         -- Determine how many digits we could shift by and shift by that many
@@ -862,7 +862,7 @@ M_mt.__shl =
 
         u = 0
         for i=1,#a._digits do
-        	-- Shift, and mask it down to the carry.
+            -- Shift, and mask it down to the carry.
             uu = (a._digits[i] >> shift) & mask
             -- Shift and add the carry from the last operation.
             a._digits[i] = ((a._digits[i] << c) | u) & DIGIT_MASK
@@ -891,12 +891,12 @@ M_mt.__shr =
 
         a, b = get_inputs(a, b)
         if not b._pos then
-        	return nil, "Cannot shift by negative"
+            return nil, "Cannot shift by negative"
         end
         t = b
         b = b:asnumber()
         if M:new(b) ~= t then
-        	return nil, "Overflow"
+            return nil, "Overflow"
         end
 
         -- Determine how many digits we could shift by and shift by that many
@@ -917,7 +917,7 @@ M_mt.__shr =
 
         u = 0
         for i=#a._digits,1,-1 do
-        	-- Mask off the amount we're shifting by.
+            -- Mask off the amount we're shifting by.
             uu = a._digits[i] & mask
             -- Move the value to the right since it's a right shift and add the
             -- carry onto the most significant side. The carry was the least
@@ -1123,7 +1123,7 @@ function M:len_bytes()
 
     bits = self:len_bits()
     if bits <= 8 then
-    	return 1
+        return 1
     end
 
     if bits % 8 ~= 0 then
@@ -1198,7 +1198,7 @@ function M:set(n)
     -- The process here is set the digit, multiply by base to move it over.
     -- Add the next and repeat until we're out of digits.
     for i=1,#n do
-    	-- Take the current digit and get the numeric value it corresponds to.
+        -- Take the current digit and get the numeric value it corresponds to.
         c = n:sub(i, i)
         b = RMAP[c]
         if b == nil then

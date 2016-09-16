@@ -71,7 +71,7 @@ M_mt.__add =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._bn = b + a._bn
+            a._bn = b + a._bn
         else
             a._bn = a._bn + b
         end
@@ -86,7 +86,7 @@ M_mt.__sub =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._bn = b - a._bn
+            a._bn = b - a._bn
         else
             a._bn = a._bn - b
         end
@@ -114,7 +114,7 @@ M_mt.__mod =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._bn = b % a._bn
+            a._bn = b % a._bn
         else
             a._bn = a._bn % b
         end
@@ -129,7 +129,7 @@ M_mt.__pow =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._bn = b ^ a._bn
+            a._bn = b ^ a._bn
         else
             a._bn = a._bn ^ b
         end
@@ -152,8 +152,8 @@ M_mt.__idiv =
 
         a, b, s = get_inputs(a, b)
         if s and b == 0 then
-        	a._val = 0
-        	return a
+            a._val = 0
+            return a
         end
         -- if b == 0 then divide by 0 exception, let it happen.
 
@@ -235,7 +235,7 @@ M_mt.__shr =
 M_mt.__concat =
     function(a, b)
         if M.isuint(a) and M.isuint(b) then
-        	return a._bn..b._bn
+            return a._bn..b._bn
         elseif M.isuint(a) and not M.isuint(b) then
             return a._bn..b
         end
@@ -256,14 +256,14 @@ M_mt.__lt =
 
         a, b, s = get_inputs(a, b)
         if s then
-        	return a._bn > b
+            return a._bn > b
         end
         return a._bn < b
     end
 M_mt.__le =
     function(a, b)
         if a < b or a == b then
-        	return true
+            return true
         end
         return false
     end
@@ -311,7 +311,7 @@ end
 
 function M.isuint(t)
     if type(t) == "table" and getmetatable(t) == M_mt then
-    	return true
+        return true
     end
     return false
 end
@@ -366,18 +366,18 @@ function M:swape()
 
     v = self:asbytearray()
     for i=1,#v//2 do
-    	t = v[i]
-    	v[i] = v[#v-i+1]
-    	v[#v-i+1] = t
+        t = v[i]
+        v[i] = v[#v-i+1]
+        v[#v-i+1] = t
     end
 
     t = {}
     for i=#v,1,-1 do
-    	t[#t+1] = v[i]
+        t[#t+1] = v[i]
     end
 
     for i=1,#t do
-    	n = n | (v[i] << i*8-8)
+        n = n | (t[i] << i*8-8)
     end
 
     return M:new(self._bits, n)
@@ -397,7 +397,7 @@ function M:ashex(width)
     s = self._bn:ashex()
 
     if width == nil or #s >= width then
-    	return s
+        return s
     end
 
     return string.rep("0", width-#s)..s
@@ -409,7 +409,7 @@ function M:asbytearray()
     c = self._bn:asbytearray()
     -- Fixed size type so we need fixed size output
     for i=1,(self._bits//8)-#c do
-    	table.insert(c, 1, 0)
+        table.insert(c, 1, 0)
     end
 
     return c
@@ -421,7 +421,7 @@ function M:asbytestring()
 
     b = self:asbytearray()
     for i=1,#b do
-    	s = s .. string.char(b[i])
+        s = s .. string.char(b[i])
     end
     return s
 end

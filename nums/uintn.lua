@@ -117,9 +117,9 @@ M_mt.__mod =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._val = b % a._val
+            a._val = b % a._val
         else
-        	a._val = a._val % b
+            a._val = a._val % b
         end
 
         reduce_range(a)
@@ -132,9 +132,9 @@ M_mt.__pow =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._val = b ^ a._val
+            a._val = b ^ a._val
         else
-        	a._val = a._val ^ b
+            a._val = a._val ^ b
         end
 
         reduce_range(a)
@@ -155,15 +155,15 @@ M_mt.__idiv =
 
         a, b, s = get_inputs(a, b)
         if s and b == 0 then
-        	a._val = 0
-        	return a
+            a._val = 0
+            return a
         end
         -- if b == 0 then divide by 0 exception, let it happen.
 
         if s then
-        	a._val = b // a._val
+            a._val = b // a._val
         else
-        	a._val = a._val // b
+            a._val = a._val // b
         end
 
         reduce_range(a)
@@ -212,9 +212,9 @@ M_mt.__shl =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._val = b << a._val
+            a._val = b << a._val
         else
-        	a._val = a._val << b
+            a._val = a._val << b
         end
 
         reduce_range(a)
@@ -227,9 +227,9 @@ M_mt.__shr =
         a, b, s = get_inputs(a, b)
 
         if s then
-        	a._val = b >> a._val
+            a._val = b >> a._val
         else
-        	a._val = a._val >> b
+            a._val = a._val >> b
         end
 
         reduce_range(a)
@@ -238,7 +238,7 @@ M_mt.__shr =
 M_mt.__concat =
     function(a, b)
         if M.isuint(a) and M.isuint(b) then
-        	return a._val..b._val
+            return a._val..b._val
         elseif M.isuint(a) and not M.isuint(b) then
             return a._val..b
         end
@@ -259,14 +259,14 @@ M_mt.__lt =
 
         a, b, s = get_inputs(a, b)
         if s then
-        	return a._val > b
+            return a._val > b
         end
         return a._val < b
     end
 M_mt.__le =
     function(a, b)
         if a < b or a == b then
-        	return true
+            return true
         end
         return false
     end
@@ -283,10 +283,10 @@ function new(bits, n)
     o._max = 1 << o._bits
 
     if n == nil then
-    	n = 0
+        n = 0
     end
     if M.isuint(n) then
-    	o._val = n._val
+        o._val = n._val
     else
         o._val = tonumber(n)
     end
@@ -299,7 +299,7 @@ end
 
 function M.isuint(t)
     if type(t) == "table" and getmetatable(t) == M_mt then
-    	return true
+        return true
     end
     return false
 end
@@ -324,9 +324,9 @@ end
 
 function M:set(n)
     if M.isuint(n) then
-    	self._val = n._val
+        self._val = n._val
     else
-    	self._val = tonumber(n)
+        self._val = tonumber(n)
     end
     reduce_range(self)
 end
@@ -338,18 +338,18 @@ function M:swape()
 
     v = self:asbytearray()
     for i=1,#v//2 do
-    	t = v[i]
-    	v[i] = v[#v-i+1]
-    	v[#v-i+1] = t
+        t = v[i]
+        v[i] = v[#v-i+1]
+        v[#v-i+1] = t
     end
 
     t = {}
     for i=#v,1,-1 do
-    	t[#t+1] = v[i]
+        t[#t+1] = v[i]
     end
 
     for i=1,#t do
-    	n = n | (v[i] << i*8-8)
+        n = n | (t[i] << i*8-8)
     end
 
     return new(self._bits, n)
@@ -362,7 +362,7 @@ end
 function M:ashex(width)
     local f = "%"
     if width ~= nil then
-    	f = f .. "0" .. tostring(width)
+        f = f .. "0" .. tostring(width)
     end
     f = f .. "x"
     return f:format(self._val)
@@ -384,7 +384,7 @@ function M:asbytestring()
 
     b = self:asbytearray()
     for i=1,#b do
-    	s = s .. string.char(b[i])
+        s = s .. string.char(b[i])
     end
     return s
 end
