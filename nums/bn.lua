@@ -1023,16 +1023,24 @@ M_mt.__tostring =
 --
 -- @return BN.
 function M:new(n)
+    local o
+
     if self ~= M then
         return nil, "first argument must be self"
     end
-    local o = setmetatable({}, M_mt)
+
+    if n ~= nil and M.isbn(n) then
+        return n:copy()
+    end
+
+    o = setmetatable({}, M_mt)
     -- The BN is made of 2 parts. The sign and a list of digits.
     o._pos = true
     o._digits = { 0 }
     if n ~= nil then
         o:set(n)
     end
+
     return o
 end
 setmetatable(M, { __call = M.new })
@@ -1169,11 +1177,27 @@ function M:set(n)
 
     reset(self)
 
+    -- Nothing to set so assume 0.
+    if n == nil then
+        return true
+    end
+
+    -- If it's a bn we just copy it.
+    if M.isbn(n) then
+        self = n:copy()
+        return true
+    end
+
     -- Convert the number to a string and remove any decimal portion. We're
     -- using 0 truncation so it doesn't matter what's there.
     n = tostring(n)
     n = n:gsub("%.%d*", "")
     n = n:gsub("L?L?$", "")
+
+    -- Nothing left so assume 0.
+    if n == "" then
+        return true
+    end
 
     -- Check if the number is negative.
     if n:sub(1, 1) == "-" then
