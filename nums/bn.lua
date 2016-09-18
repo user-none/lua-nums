@@ -36,6 +36,8 @@
 -- strategy is truncation. Which is consistent with other GMP and Libtommath
 -- but not Lua or python which use floor truncation (toward negative infinity).
 
+local math = math
+
 local M = {}
 local M_mt = {}
 
@@ -117,6 +119,7 @@ while x > z do
 end
 DIGIT_BITS = ((y - 1)//2) - 1 -- Gives us 30 bits with Lua 5.3.
 local DIGIT_MASK = (1 << DIGIT_BITS) - 1
+local DIGIT_MAX = DIGIT_MASK
 -- Carry needs to be 1 bit more than the digit because a carry will fill the
 -- next bit. Carry is always 1 bit more than DIGIT_BITS. We'll need to bring
 -- negative numbers back into range when dealing with subtraction.
@@ -468,6 +471,107 @@ local function div_remain(a, b)
     reduce(q)
     reduce(r)
     return q, r
+end
+
+local function set_string(s, n)
+    local u = 0
+    local r = 0
+    local c = 0
+    local b = 0
+    local t = 0
+    local base = 10
+
+    -- Convert the number to a string and remove any decimal portion. We're
+    -- using 0 truncation so it doesn't matter what's there.
+    n = tostring(n)
+    n = n:gsub("%.%d*", "")
+    n = n:gsub("L?L?$", "")
+
+    -- Nothing left so assume 0.
+    if n == "" then
+        return true
+    end
+
+    -- Check if the number is negative.
+    if n:sub(1, 1) == "-" then
+        s._pos = false
+        n = n:sub(2, #n)
+    end
+
+    -- Convert to uppercase so we can have one check for the hex prefix. If
+    -- it's a hex number change the base to 16 and remove the prefix.
+    n = n:upper()
+    if n:sub(1, 2) == "0X" then
+        base = 16
+        n = n:sub(3, #n)
+    end
+
+    -- Go though each digit in the string from most to least significant.
+    -- We're using single digit optimizations for multiplication and division
+    -- because: 1. It gives us a performance boost since base will never be
+    -- a BN. 2. We can't use the BN's __mul and __add functions because those
+    -- call get_input(s) which in turn call :set. Infinite loops are bad.
+    --
+    -- The process here is set the digit, multiply by base to move it over.
+    -- Add the next and repeat until we're out of digits.
+    for i=1,#n do
+        -- Take the current digit and get the numeric value it corresponds to.
+        c = n:sub(i, i)
+        b = RMAP[c]
+        if b == nil then
+            reset(s)
+            return false
+        end
+
+        -- Multiply by base so we can move what we already have over to the
+        -- make room for adding the next digit.
+        u = 0
+        for i=1,#s._digits do
+            s._digits[i] = (s._digits[i] * base) + u
+            u = s._digits[i] >> DIGIT_BITS
+            s._digits[i] = s._digits[i] & DIGIT_MASK
+        end
+        if u ~= 0 then
+            s._digits[#s._digits+1] = u
+        end
+
+        -- Add the digit.
+        s._digits[1] = s._digits[1] + b
+        u = s._digits[1] >> DIGIT_BITS
+        s._digits[1] = s._digits[1] & DIGIT_MASK
+        -- Handle the carry from the add.
+        for i=2,#s._digits do
+            if u == 0 then
+                break
+            end
+            s._digits[i] = s._digits[i] + u
+            u = s._digits[i] >> DIGIT_BITS
+            s._digits[i] = s._digits[i] & DIGIT_MASK
+        end
+        if u ~= 0 then
+            s._digits[#s._digits+1] = u
+        end
+    end
+
+    reduce(s)
+    return true
+end
+
+local function set_number(s, n)
+    n = math.floor(n)
+
+    if n >= -DIGIT_MAX and n <= DIGIT_MAX then
+        if n < 0 then
+            n = -n
+            s._pos = false
+        end
+
+        s._digits[1] = n
+        return true
+    end
+
+    set_string(s, n)
+    return true
 end
 
 --- To string internal function that will output in a given base.
@@ -1168,13 +1272,6 @@ end
 --
 -- @return BN.
 function M:set(n)
-    local u = 0
-    local r = 0
-    local c = 0
-    local b = 0
-    local t = 0
-    local base = 10
-
     reset(self)
 
     -- Nothing to set so assume 0.
@@ -1188,80 +1285,11 @@ function M:set(n)
         return true
     end
 
-    -- Convert the number to a string and remove any decimal portion. We're
-    -- using 0 truncation so it doesn't matter what's there.
-    n = tostring(n)
-    n = n:gsub("%.%d*", "")
-    n = n:gsub("L?L?$", "")
-
-    -- Nothing left so assume 0.
-    if n == "" then
-        return true
+    if type(n) == "number" then
+        return set_number(self, n)
     end
 
-    -- Check if the number is negative.
-    if n:sub(1, 1) == "-" then
-        self._pos = false
-        n = n:sub(2, #n)
-    end
-
-    -- Convert to uppercase so we can have one check for the hex prefix. If
-    -- it's a hex number change the base to 16 and remove the prefix.
-    n = n:upper()
-    if n:sub(1, 2) == "0X" then
-        base = 16
-        n = n:sub(3, #n)
-    end
-
-    -- Go though each digit in the string from most to least significant.
-    -- We're using single digit optimizations for multiplication and division
-    -- because: 1. It gives us a performance boost since base will never be
-    -- a BN. 2. We can't use the BN's __mul and __add functions because those
-    -- call get_input(s) which in turn call :set. Infinite loops are bad.
-    --
-    -- The process here is set the digit, multiply by base to move it over.
-    -- Add the next and repeat until we're out of digits.
-    for i=1,#n do
-        -- Take the current digit and get the numeric value it corresponds to.
-        c = n:sub(i, i)
-        b = RMAP[c]
-        if b == nil then
-            reset(self)
-            return false
-        end
-        
-        -- Multiply by base so we can move what we already have over to the
-        -- make room for adding the next digit.
-        u = 0
-        for i=1,#self._digits do
-            self._digits[i] = (self._digits[i] * base) + u
-            u = self._digits[i] >> DIGIT_BITS
-            self._digits[i] = self._digits[i] & DIGIT_MASK
-        end
-        if u ~= 0 then
-            self._digits[#self._digits+1] = u
-        end
-
-        -- Add the digit.
-        self._digits[1] = self._digits[1] + b
-        u = self._digits[1] >> DIGIT_BITS
-        self._digits[1] = self._digits[1] & DIGIT_MASK
-        -- Handle the carry from the add.
-        for i=2,#self._digits do
-            if u == 0 then
-                break
-            end
-            self._digits[i] = self._digits[i] + u
-            u = self._digits[i] >> DIGIT_BITS
-            self._digits[i] = self._digits[i] & DIGIT_MASK
-        end
-        if u ~= 0 then
-            self._digits[#self._digits+1] = u
-        end
-    end
-
-    reduce(self)
-    return true
+    return set_string(self, n)
 end
 
 --- Output the BN as a hex string.
