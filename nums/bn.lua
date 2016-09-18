@@ -485,7 +485,7 @@ local function set_string(s, n)
     -- using 0 truncation so it doesn't matter what's there.
     n = tostring(n)
     n = n:gsub("%.%d*", "")
-    n = n:gsub("L?L?$", "")
+    n = n:gsub("U?L?L?$", "")
 
     -- Nothing left so assume 0.
     if n == "" then
