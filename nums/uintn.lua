@@ -61,7 +61,11 @@ local function get_inputs(a, b)
 end
 
 local function reduce_range(o)
-    o._val = o._val % o._max
+    if o._val == o._max then
+        o._val = 0
+    elseif o._val < 0 or o._val > o._max then
+        o._val = o._val % o._max
+    end
 end
 
 -- M_mt
