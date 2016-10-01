@@ -369,7 +369,7 @@ function M:ashex(width)
         f = f .. "0" .. tostring(width)
     end
     f = f .. "x"
-    return f:format(self._val)
+    return f:format(self._val):upper()
 end
 
 function M:asbytearray()
