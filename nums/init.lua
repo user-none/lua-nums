@@ -1,4 +1,4 @@
-local nums
+local nums = {}
 
 nums.bn = require("bn")
 nums.uintb = require("uintb")
