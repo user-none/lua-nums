@@ -1343,10 +1343,9 @@ end
 function M:asbytearray()
     local t = {}
 
-    for i=self:len_bytes(),1,-1 do
-        t[#t+1] = ((self >> ((i-1) * 8)) & 0xFF):asnumber()
+    for i=self:len_bytes()-1,0,-1 do
+        t[#t+1] = ((self >> (i*8)) & 0xFF):asnumber()
     end
-
     return t
 end
 
@@ -1357,13 +1356,12 @@ end
 -- @see asbytearray
 function M:asbytestring()
     local b
-    local s = ""
 
     b = self:asbytearray()
     for i=1,#b do
-        s = s .. string.char(b[i])
+        b[i] = string.char(b[i])
     end
-    return s
+    return table.concat(b)
 end
 
 -- Static
