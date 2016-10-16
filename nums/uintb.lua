@@ -381,7 +381,7 @@ function M:swape()
     end
 
     for i=1,#t do
-        n = n | (t[i] << i*8-8)
+        n = n | (bn(t[i]) << i*8-8)
     end
 
     return M:new(self._bits, n)
@@ -421,13 +421,12 @@ end
 
 function M:asbytestring()
     local b
-    local s = ""
 
     b = self:asbytearray()
     for i=1,#b do
-        s = s .. string.char(b[i])
+        b[i] = string.char(b[i])
     end
-    return s
+    return table.concat(b)
 end
 
 return M
