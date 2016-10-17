@@ -20,7 +20,7 @@
 
 --- Fixed width unsigned integers backed by Lua's number type.
 
-local bn = require("bn")
+local bn = require("nums.bn")
 
 local M = {}
 local M_mt = {}

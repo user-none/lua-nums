@@ -21,7 +21,7 @@ build = {
     modules = {
         ["nums"]       = "nums/init.lua",
         ["nums.bn"]    = "nums/bn.lua",
-        ["nums.unitn"] = "nums/uintn.lua",
+        ["nums.uintn"] = "nums/uintn.lua",
         ["nums.uintb"] = "nums/uintb.lua"
     }
 }
