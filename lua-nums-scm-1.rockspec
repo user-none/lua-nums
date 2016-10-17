@@ -2,7 +2,7 @@ package = "lua-nums"
 version = "scm-1"
 
 source = {
-    url = "https://github.com/user-none/lua-nums.git"
+    url = "git://github.com/user-none/lua-nums.git"
 }
 
 description = {
