@@ -1,4 +1,4 @@
-uint = require("uintb")
+uint = require("nums.uintb")
 
 a8 = uint.u8(19)
 b8 = uint.u8(142)

@@ -1,4 +1,4 @@
-bn = require("bn")
+bn = require("nums.bn")
 
 a = bn(255)
 b = bn("123456789012345678901234567")
