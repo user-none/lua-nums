@@ -1,7 +1,7 @@
 Lua-nums
 ========
 
-Lua number library providing BigNum and fixed width unsigned integer types.
+Pure Lua number library providing BigNum and fixed width unsigned integer types.
 
 BigNum (Infinite Precision)
 ---------------------------
