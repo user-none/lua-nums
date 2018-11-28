@@ -1081,12 +1081,34 @@ M_mt.__lt =
         local x
 
         a, b = get_inputs(a, b)
-        if (not a._pos and b._pos) or #a._digits < #b._digits then
+
+        -- First check if we have different signs. A
+        -- negative number is always less than a positive
+        -- number and vise versa.
+        if not a._pos and b._pos then
             return true
-        elseif (a._pos and not b._pos) or #a._digits > #b._digits then
+        elseif a._pos and not b._pos then
             return false
         end
 
+        -- a and b both have the same sign but might
+        -- not have the same number of digits.
+        if  #a._digits < #b._digits then
+            if a._pos then
+                return true
+            else
+                return false 
+            end
+        elseif #a._digits > #b._digits then
+            if a._pos then
+                return false
+            else
+                return true
+            end
+        end
+
+        -- Same sign and same number of digits.
+        -- We'll have to do a digit compare.
         if not a._pos then
             x = a
             a = b

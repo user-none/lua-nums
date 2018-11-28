@@ -37,6 +37,11 @@ if nf - ne - b ~= bn("-123456777012345678901234567L") then
     fail = true
 end
 
+if h - 1 ~= g then
+    print("\tFail: h - 1")
+    fail = true
+end
+
 if not fail then
     print("\tPass")
 end

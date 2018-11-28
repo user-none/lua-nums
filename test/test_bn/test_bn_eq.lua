@@ -87,6 +87,71 @@ if not (b <= bn("000123456789012345678901234567L")) then
     fail = true
 end
 
+if ng > bn(1) then
+    print("\tFail: ng > 1")
+    fail = true
+end
+
+if ng > bn(-1) then
+    print("\tFail: ng > -1")
+    fail = true
+end
+
+if not (ng < bn(1)) then
+    print("\tFail: not ng < 1")
+    fail = true
+end
+
+if not (ng < bn(-1)) then
+    print("\tFail: not ng < -1")
+    fail = true
+end
+
+if not (g > bn(1)) then
+    print("\tFail: not g > 1")
+    fail = true
+end
+
+if not (g > bn(-1)) then
+    print("\tFail: not g > -1")
+    fail = true
+end
+
+if g < bn(1) then
+    print("\tFail: g < 1")
+    fail = true
+end
+
+if g < bn(-1) then
+    print("\tFail: g < -1")
+    fail = true
+end
+
+if g ~= -ng then
+    print("\tFail: g ~= -ng")
+    fail = true
+end
+
+if -g ~= ng then
+    print("\tFail: -g ~= ng")
+    fail = true
+end
+
+if not (g < h) then
+    print("\tFail: not g < h")
+    fail = true
+end
+
+if g > h then
+    print("\tFail: g > h")
+    fail = true
+end
+
+if g == h then
+    print("\tFail: g == h")
+    fail = true
+end
+
 if not fail then
     print("\tPass")
 end

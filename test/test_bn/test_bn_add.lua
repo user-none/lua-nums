@@ -37,6 +37,11 @@ if nf + ne + b ~= bn("123456740118857531482131337") then
     fail = true
 end
 
+if g + 1 ~= h then
+    print("\tFail: g + 1")
+    fail = true
+end
+
 if not fail then
     print("\tPass")
 end
