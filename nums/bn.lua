@@ -797,7 +797,9 @@ M_mt.__mod =
     -- -240 R  9 = -6
     -- -240 R -9 = -6
     function(a, b)
-        local _, c
+        local c
+        local _
+
         a, b = get_inputs(a, b)
         _, c = div_remain(a, b)
         -- Change the wrapping direction appropriately.
@@ -876,7 +878,8 @@ M_mt.__unm =
     end
 M_mt.__idiv =
     function(a, b)
-        local c, _
+        local c
+        local _
         a, b = get_inputs(a, b)
         c, _ = div_remain(a, b)
         return c
@@ -1209,7 +1212,8 @@ end
 -- @return BN.
 function M:remain(b)
     local a
-    local _, c
+    local c
+    local _
     a, b = get_inputs(self, b)
     _, c = div_remain(a, b)
     return c
