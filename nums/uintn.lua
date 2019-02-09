@@ -281,7 +281,7 @@ M_mt.__tostring =
 
 -- Private
 
-function new(bits, n)
+local function new(bits, n)
     local o = setmetatable({}, M_mt)
     o._bits = bits
     o._max = 1 << o._bits
