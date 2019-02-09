@@ -64,5 +64,7 @@ between these two and they test the two different backends.
 Tests can be run directly from the test directory  like so:
 
     $ cd test
-    $ LUA_PATH="../?.lua;./?.lua;" lua5.3 test_bn.lua
+    $ lua5.3 -l fixpath test_bn.lua
+    $ lua5.3 -l fixpath test_uintn.lua
+    $ lua5.3 -l fixpath test_uintb.lua
 

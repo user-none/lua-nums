@@ -1,12 +1,4 @@
-uint = require("nums.uintb")
-
-a8 = uint.u8(19)
-b8 = uint.u8(142)
-c8 = uint.u8(254)
-
-a32 = uint.u32(6000)
-b32 = uint.u32(9)
-c32 = uint.u32(12345678)
+require"test_uint.common"(require"nums.uintb")
 
 require("test_uint.add")
 require("test_uint.sub")

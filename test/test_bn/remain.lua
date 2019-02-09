@@ -1,3 +1,6 @@
+local env = require "test_bn.common"()
+local bn, a,b,c,d,e,f,g,h, na,nb,nc,nd,ne,nf,ng,nh = (table.unpack or unpack)(env)
+
 local fail = false
 
 print("Test: remain...")

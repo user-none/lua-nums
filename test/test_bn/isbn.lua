@@ -1,3 +1,6 @@
+local env = require "test_bn.common"()
+local bn, a,b,c,d,e,f,g,h, na,nb,nc,nd,ne,nf,ng,nh = (table.unpack or unpack)(env)
+
 local fail = false
 
 print("Test: isbn...")
@@ -32,9 +35,6 @@ if bn.isbn("123") then
     fail = true
 end
 
-
 if not fail then
     print("\tPass")
 end
-
-
