@@ -172,6 +172,8 @@ M_mt.__idiv =
     end
 M_mt.__band =
     function(a, b)
+        local s
+
         a, b, s = get_inputs(a, b)
 
         a._bn = a._bn & b
@@ -181,6 +183,8 @@ M_mt.__band =
     end
 M_mt.__bor =
     function(a, b)
+        local s
+
         a, b, s = get_inputs(a, b)
 
         a._bn = a._bn | b
