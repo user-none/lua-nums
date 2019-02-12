@@ -308,16 +308,16 @@ function M.isuint(t)
     return false
 end
 
-function M.u8(v)
-    return new(8, v)
+function M.u8(n)
+    return new(8, n)
 end
 
-function M.u16(v)
-    return new(16, v)
+function M.u16(n)
+    return new(16, n)
 end
 
-function M.u32(v)
-    return new(32, v)
+function M.u32(n)
+    return new(32, n)
 end
 
 function M.u64()
