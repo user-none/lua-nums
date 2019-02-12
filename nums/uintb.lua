@@ -282,12 +282,8 @@ M_mt.__tostring =
 
 -- Object
 
-function M:new(bits, n)
+local function new(bits, n)
     local o = setmetatable({}, M_mt)
-
-    if self ~= M then
-        return nil, "first argument must be self"
-    end
 
     if bits == nil then
         return nil, "bits required"
@@ -325,37 +321,37 @@ function M.isuint(t)
 end
 
 function M.u8(n)
-    return M:new(8, n)
+    return new(8, n)
 end
 
 function M.u16(n)
-    return M:new(16, n)
+    return new(16, n)
 end
 
 function M.u32(n)
-    return M:new(32, n)
+    return new(32, n)
 end
 
 function M.u64(n)
-    return M:new(64, n)
+    return new(64, n)
 end
 
 function M.u128(n)
-    return M:new(128, n)
+    return new(128, n)
 end
 
 function M.u256(n)
-    return M:new(256, n)
+    return new(256, n)
 end
 
 function M.u512(n)
-    return M:new(512, n)
+    return new(512, n)
 end
 
 -- M
 
 function M:copy()
-    return M:new(self._bits, self._bn)
+    return new(self._bits, self._bn)
 end
 
 function M:set(n)
@@ -388,7 +384,7 @@ function M:swape()
         n = n | (bn(t[i]) << i*8-8)
     end
 
-    return M:new(self._bits, n)
+    return new(self._bits, n)
 end
 
 function M:asnumber()
