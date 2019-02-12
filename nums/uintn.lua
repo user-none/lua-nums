@@ -282,6 +282,10 @@ M_mt.__tostring =
 -- Private
 
 local function new(bits, n)
+    if bits == nil then
+        return nil, "bits required"
+    end
+
     local o = setmetatable({}, M_mt)
     o._bits = bits
     o._max = 1 << o._bits

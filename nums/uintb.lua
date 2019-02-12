@@ -283,12 +283,11 @@ M_mt.__tostring =
 -- Object
 
 local function new(bits, n)
-    local o = setmetatable({}, M_mt)
-
     if bits == nil then
         return nil, "bits required"
     end
 
+    local o = setmetatable({}, M_mt)
     if M.isuint(bits) then
         o._bits = bits._bits
         o._max = bits._max
