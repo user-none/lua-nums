@@ -320,6 +320,13 @@ function M.u32(v)
     return new(32, v)
 end
 
+function M.u64()
+    error("nums.unitb does not support greater than u32. Please use nums.uintn", 2)
+end
+M.u128 = M.u64
+M.u256 = M.u64
+M.u512 = M.u64
+
 -- M
 
 function M:copy()
