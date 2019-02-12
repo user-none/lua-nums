@@ -18,7 +18,7 @@
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 -- DEALINGS IN THE SOFTWARE.
 
---- Fixed width unsigned integers backed by Lua's number type.
+--- Fixed width unsigned integers backed by a BigNum.
 
 local bn = require("nums.bn")
 
