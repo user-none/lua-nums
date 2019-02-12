@@ -320,6 +320,22 @@ function M.u32(v)
     return new(32, v)
 end
 
+function M.u64(v)
+    return new(64, v)
+end
+
+function M.u128(v)
+    return new(128, v)
+end
+
+function M.u256(v)
+    return new(256, v)
+end
+
+function M.u512(v)
+    return new(512, v)
+end
+
 -- M
 
 function M:copy()
