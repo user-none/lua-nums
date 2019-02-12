@@ -19,6 +19,24 @@
 -- DEALINGS IN THE SOFTWARE.
 
 --- Fixed width unsigned integers backed by Lua's number type.
+--
+-- Maximum size is limited by the underlying number type size.
+-- The detault size Lua uses is a 64 bit signed integer. Due to
+-- overflow being used to handle wrapping nothing bigger than a
+-- 32 bit unsigned integer can be supported/represented with this
+-- backing type. In order to use larger than 32 bit unsigned integers
+-- the BigNum backed uintb type needs to be used.
+--
+-- The size limitations Lua's number type imposes is why there is not
+-- a public new function and instead a uintn must be created using 
+-- one of the fixed size functions, u32, u16, and u8.
+--
+-- Also, while Lua's number type is a 64 bit signed type it is possible
+-- to compile Lua with a smaller number size. If a smaller size is used
+-- this could make u32 and friends stop functioning properly. However,
+-- changing the number size is a conscious choice made at compile time.
+-- As such, it is known to the programmer limitations that changing
+-- the number size imposes.
 
 local M = {}
 local M_mt = {}
