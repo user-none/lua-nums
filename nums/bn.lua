@@ -568,6 +568,16 @@ local function set_number(s, n)
     return true
 end
 
+--- Copy the value of a into b
+local function copy_bn(a, b)
+    b._pos = a._pos
+    b._digits = {}
+
+    for i=1,#a._digits do
+        b._digits[i] = a._digits[i]
+    end
+end
+
 --- To string internal function that will output in a given base.
 --
 -- Base 10 and 16 are supported.
@@ -1175,12 +1185,7 @@ function M:copy()
     local n
 
     n = M:new()
-    n._pos = self._pos
-    n._digits = {}
-
-    for i=1,#self._digits do
-        n._digits[i] = self._digits[i]
-    end
+    copy_bn(self, n)
 
     return n
 end
@@ -1300,7 +1305,7 @@ function M:set(n)
 
     -- If it's a bn we just copy it.
     if M.isbn(n) then
-        --self = n:copy() -- FIXME: this line is useless ?
+        copy_bn(n, self)
         return true
     end
 
