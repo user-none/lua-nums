@@ -396,15 +396,7 @@ function M:asbn()
 end
 
 function M:ashex(width)
-    local s
-
-    s = self._bn:ashex()
-
-    if width == nil or #s >= width then
-        return s
-    end
-
-    return string.rep("0", width-#s)..s
+    return self._bn:ashex(width)
 end
 
 function M:asbytearray()

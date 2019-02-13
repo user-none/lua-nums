@@ -3,7 +3,7 @@ local fail = false
 print("Test: eq...")
 
 if a:asnumber() ~= 255 then
-    print("\tFail: a:asnumber() =")
+    print("\tFail: a:asnumber() == 255")
     fail = true
 end
 

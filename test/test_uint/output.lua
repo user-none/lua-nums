@@ -23,6 +23,11 @@ if a32:ashex():upper() ~= "1770" then
     fail = true
 end
 
+if a32:ashex(2):upper() ~= "1770" then
+    print("\tFail: a32:ashex(2) ~= 1770")
+    fail = true
+end
+
 if b32:ashex():upper() ~= "9" then
     print("\tFail: b32:ashex() ~= 9")
     fail = true
@@ -30,6 +35,11 @@ end
 
 if c32:ashex():upper() ~= "BC614E" then
     print("\tFail: c32:ashex() ~= BC614E")
+    fail = true
+end
+
+if c32:ashex(10):upper() ~= "0000BC614E" then
+    print("\tFail: c32:ashex(10) ~= 0000BC614E")
     fail = true
 end
 

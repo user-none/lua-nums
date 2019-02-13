@@ -37,8 +37,18 @@ if a:ashex():upper() ~= "FF" then
     fail = true
 end
 
+if a:ashex(7):upper() ~= "00000FF" then
+    print("\tFail: a:ashex(7) ~= 00000FF")
+    fail = true
+end
+
 if b:ashex():upper() ~= "661EFDF158F2A82C9F4B87" then
     print("\tFail: b:ashex() ~= 661EFDF158F2A82C9F4B87")
+    fail = true
+end
+
+if b:ashex(2):upper() ~= "661EFDF158F2A82C9F4B87" then
+    print("\tFail: b:ashex(2) ~= 661EFDF158F2A82C9F4B87")
     fail = true
 end
 
@@ -79,6 +89,16 @@ end
 
 if nc:asnumber() ~= -256 then
     print("\tFail: nc:asnumber() ~= -256")
+    fail = true
+end
+
+if d:asnumber() ~= nil then
+    print("\tFail: d:asnumber() == nil")
+    fail = true
+end
+
+if nd:asnumber() ~= nil then
+    print("\tFail: nd:asnumber() == nil")
     fail = true
 end
 

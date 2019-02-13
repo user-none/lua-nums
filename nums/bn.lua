@@ -1321,8 +1321,22 @@ end
 -- Hex prefix 0x/0X will not be prepended.
 --
 -- @return String of hex digits representing the BN.
-function M:ashex()
-    return tostring_int(self, 16)
+function M:ashex(width)
+    local s
+
+    s = tostring_int(self, 16)
+
+    if M.isbn(width) then
+        width = width:asnumber()
+    elseif type(width) == "string" then
+        width = tonumber(width)
+    end
+
+    if width == nil or #s >= width then
+        return s
+    end
+
+    return string.rep("0", width-#s)..s
 end
 
 --- Output the BN as a native number.
@@ -1330,7 +1344,7 @@ end
 -- If the BN is larger than the native type then as much as can be fit into
 -- the native type will be. The most significant digits will be truncated.
 --
--- @return A native number.
+-- @return A native number. nil, error on Error (typically overflow)
 function M:asnumber()
     local q = 1
     local x = 0
@@ -1355,6 +1369,9 @@ function M:asnumber()
         q = q * -1
     end
 
+    if M:new(q) ~= self then
+        return nil, "Overflow"
+    end
     return q
 end
 
