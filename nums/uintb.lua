@@ -347,6 +347,13 @@ function M.u512(n)
     return new(512, n)
 end
 
+function M.new(self, bits, n)
+    if type(self)=="number" and n==nil then -- allow to call M.new(bits, n) instead of M:new(bits, n)
+        bits, n = self, bits
+    end
+    return new(bits, n)
+end
+
 -- M
 
 function M:copy()
