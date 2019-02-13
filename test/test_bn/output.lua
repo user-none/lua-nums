@@ -72,6 +72,16 @@ if f:ashex():upper() ~= "FFFFFFFFFFFFFFFF" then
     fail = true
 end
 
+if nf:ashex():upper() ~= "-FFFFFFFFFFFFFFFF" then
+    print("\tFail: nf:ashex() ~= -FFFFFFFFFFFFFFFF")
+    fail = true
+end
+
+if nc:ashex(6):upper() ~= "-000100" then
+    print("\tFail: nf:ashex() ~= -000100")
+    fail = true
+end
+
 if a:asnumber() ~= 255 then
     print("\tFail: a:asnumber() ~= 255")
     fail = true

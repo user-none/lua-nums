@@ -1271,6 +1271,9 @@ end
 
 --- The number of digits in the number in the given base.
 --
+-- Does not include negative symbol in count for
+-- negative numbers.
+--
 -- Supported bases:
 -- * 10
 -- * 16
@@ -1279,10 +1282,17 @@ end
 --
 -- @return BN.
 function M:len_digits(base)
+    local len
+
     if not base then
         base = 10
     end
-    return #tostring_int(self, base)
+
+    len = #tostring_int(self, base)
+    if not self._pos then
+        len = len - 1
+    end
+    return len
 end
 
 --- Set the value of a BN to the given value.
@@ -1332,11 +1342,15 @@ function M:ashex(width)
         width = tonumber(width)
     end
 
-    if width == nil or #s >= width then
-        return s
+    if not self._pos then
+        s = s:sub(2)
     end
 
-    return string.rep("0", width-#s)..s
+    if width == nil or #s >= width then
+        return (self._pos and "" or "-")..s
+    end
+
+    return (self._pos and "" or "-")..string.rep("0", width-#s)..s
 end
 
 --- Output the BN as a native number.

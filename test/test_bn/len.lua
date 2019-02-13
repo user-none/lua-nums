@@ -87,7 +87,7 @@ if f:len_digits() ~= 20 then
     fail = true
 end
 
-if nf:len_digits() ~= 21 then
+if nf:len_digits() ~= 20 then
     print("\tFail: nf:len_digits()")
     fail = true
 end
