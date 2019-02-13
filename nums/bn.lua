@@ -108,7 +108,7 @@ local M_mt = {}
 -- Calculating DIGIT_BITS uses x > z instead of x > 0 to ensure the loop stops
 -- if the number type is unsigned. This will loop forever if the underlying
 -- number type is a BN but at that point this will be less than useful...
-local DIGIT_BITS = 0
+local DIGIT_BITS
 local x = 1
 local y = 0
 local z = 0
@@ -153,8 +153,6 @@ local RRMAP = {
 --
 -- @ see reduce
 local function expand(a, b)
-    local len
-
     -- Expand to a given number of digits.
     local function expand_num(a, num)
         while #a._digits < num do
@@ -338,8 +336,6 @@ end
 -- @return BN.
 local function sub_int(a, b)
     local c = M()
-    local min
-    local max
     local u = 0
 
     a, b = get_inputs(a, b)
@@ -474,11 +470,9 @@ local function div_remain(a, b)
 end
 
 local function set_string(s, n)
-    local u = 0
-    local r = 0
-    local c = 0
-    local b = 0
-    local t = 0
+    local u
+    local c
+    local b
     local base = 10
 
     -- Convert the number to a string and remove any decimal portion. We're
@@ -495,7 +489,7 @@ local function set_string(s, n)
     -- Check if the number is negative.
     if n:sub(1, 1) == "-" then
         s._pos = false
-        n = n:sub(2, #n)
+        n = n:sub(2)
     end
 
     -- Convert to uppercase so we can have one check for the hex prefix. If
@@ -503,7 +497,7 @@ local function set_string(s, n)
     n = n:upper()
     if n:sub(1, 2) == "0X" then
         base = 16
-        n = n:sub(3, #n)
+        n = n:sub(3)
     end
 
     -- Go though each digit in the string from most to least significant.
@@ -871,7 +865,7 @@ M_mt.__pow =
         return c
     end
 M_mt.__unm =
-    function(a, b)
+    function(a)
         a = get_input(a)
         a._pos = not a._pos
         return a
@@ -1280,7 +1274,6 @@ end
 --
 -- @return BN.
 function M:len_digits(base)
-    local a
     if not base then
         base = 10
     end
@@ -1307,7 +1300,7 @@ function M:set(n)
 
     -- If it's a bn we just copy it.
     if M.isbn(n) then
-        self = n:copy()
+        --self = n:copy() -- FIXME: this line is useless ?
         return true
     end
 
@@ -1334,7 +1327,6 @@ end
 --
 -- @return A native number.
 function M:asnumber()
-    local bytes
     local q = 1
     local x = 0
 

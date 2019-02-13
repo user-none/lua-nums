@@ -354,7 +354,7 @@ function M:set(n)
 end
 
 function M:swape()
-    local v = {}
+    local v
     local n = 0
     local t
 
