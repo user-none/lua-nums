@@ -56,26 +56,21 @@ local M_mt = {}
 --
 -- @return unit, number, swapped.
 local function get_inputs(a, b)
-    local t
-    local v
-    local s = false
+
+    local function filter(v)
+        if M.isuint(v) then
+            return v._val
+        elseif type(v) ~= "number" then
+            return tonumber(v)
+        end
+        return v
+    end
 
     if M.isuint(a) then
-        t = a
-        v = b
+        return a:copy(), filter(b), false
     else
-        t = b
-        v = a
-        s = true
+        return b:copy(), filter(a), true
     end
-
-    if M.isuint(v) then
-        v = v._val
-    elseif type(v) ~= "number" then
-        v = tonumber(v)
-    end
-
-    return t:copy(), v, s
 end
 
 local function reduce_range(o)
