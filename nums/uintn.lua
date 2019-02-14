@@ -63,15 +63,13 @@ local function get_inputs(a, b)
         swapped = true
     end
 
-    a = a:copy()
-
     if M.isuint(b) then
         b = b._val
     else
         b = tonumber(b)
     end
    
-    return a, b, swapped
+    return a:copy(), b, swapped
 end
 
 local function reduce_range(o)
