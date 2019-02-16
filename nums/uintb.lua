@@ -40,21 +40,12 @@ local M_mt = {}
 --
 -- @return unit, BN, swapped.
 local function get_inputs(a, b)
-    local t
-    local v
-    local s = false
-
-    if M.isuint(a) then
-        t = a
-        v = b
-    else
-        t = b
-        v = a
-        s = true
+    local swapped = false
+    if not M.isuint(a) then
+        a, b = b, a
+        swapped = true
     end
-
-    v = bn(v)
-    return t:copy(), v, s
+    return a:copy(), bn(b), swapped
 end
 
 local function reduce_range(o)
