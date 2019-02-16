@@ -386,8 +386,8 @@ function M:ashex(width)
     if width ~= nil then
         f = f .. "0" .. tostring(width)
     end
-    f = f .. "x"
-    return f:format(self._val):upper()
+    f = f .. "X"
+    return f:format(self._val)
 end
 
 function M:asbytearray()
